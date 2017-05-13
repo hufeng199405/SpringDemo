@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+<classPathEntry location="E:\javaEE\workspace\SpringDemo\WebContent\WEB-INF\lib\sqljdbc4.jar"/>
+  <context id="context1" >
+  
+  	<commentGenerator>
+  		<property name="suppressAllComments" value="true"/>
+  		<property name="suppressDate" value="true"/>
+  	</commentGenerator>
+  
+    <jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver" connectionURL="jdbc:sqlserver://localhost:1433;databaseName=user_db" userId="sa" password="123" />
+    <javaModelGenerator targetPackage="com.test.user.model" targetProject="SpringDemo\src" />
+    <sqlMapGenerator targetPackage="com.test.user.model" targetProject="SpringDemo\src" />
+    <javaClientGenerator targetPackage="com.test.user.dao" targetProject="SpringDemo\src" type="XMLMAPPER" />
+    <table domainObjectName="SystemUsersRecord" tableName="system_users_record" >
+    </table>
+  </context>
+</generatorConfiguration>

@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.test.product.user.dao.SystemUsersRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.test.product.user.model.SystemUsersRecord" >
+    <id column="system_users_id" property="systemUsersId" jdbcType="INTEGER" />
+    <result column="user_login_name" property="userLoginName" jdbcType="VARCHAR" />
+    <result column="user_login_password" property="userLoginPassword" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="users_name" property="usersName" jdbcType="VARCHAR" />
+    <result column="users_phone" property="usersPhone" jdbcType="VARCHAR" />
+    <result column="users_age" property="usersAge" jdbcType="INTEGER" />
+    <result column="users_card_id" property="usersCardId" jdbcType="VARCHAR" />
+    <result column="users_position" property="usersPosition" jdbcType="VARCHAR" />
+    <result column="users_home_address" property="usersHomeAddress" jdbcType="VARCHAR" />
+    <result column="users_status" property="usersStatus" jdbcType="INTEGER" />
+    <result column="users_remark" property="usersRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    system_users_id, user_login_name, user_login_password, sex, users_name, users_phone, 
+    users_age, users_card_id, users_position, users_home_address, users_status, users_remark
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.test.product.user.model.SystemUsersRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from system_users_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from system_users_record
+    where system_users_id = #{systemUsersId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from system_users_record
+    where system_users_id = #{systemUsersId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.test.product.user.model.SystemUsersRecordExample" >
+    delete from system_users_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.test.product.user.model.SystemUsersRecord" >
+    insert into system_users_record (system_users_id, user_login_name, user_login_password, 
+      sex, users_name, users_phone, 
+      users_age, users_card_id, users_position, 
+      users_home_address, users_status, users_remark
+      )
+    values (#{systemUsersId,jdbcType=INTEGER}, #{userLoginName,jdbcType=VARCHAR}, #{userLoginPassword,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=INTEGER}, #{usersName,jdbcType=VARCHAR}, #{usersPhone,jdbcType=VARCHAR}, 
+      #{usersAge,jdbcType=INTEGER}, #{usersCardId,jdbcType=VARCHAR}, #{usersPosition,jdbcType=VARCHAR}, 
+      #{usersHomeAddress,jdbcType=VARCHAR}, #{usersStatus,jdbcType=INTEGER}, #{usersRemark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.test.product.user.model.SystemUsersRecord" >
+    insert into system_users_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="systemUsersId != null" >
+        system_users_id,
+      </if>
+      <if test="userLoginName != null" >
+        user_login_name,
+      </if>
+      <if test="userLoginPassword != null" >
+        user_login_password,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="usersName != null" >
+        users_name,
+      </if>
+      <if test="usersPhone != null" >
+        users_phone,
+      </if>
+      <if test="usersAge != null" >
+        users_age,
+      </if>
+      <if test="usersCardId != null" >
+        users_card_id,
+      </if>
+      <if test="usersPosition != null" >
+        users_position,
+      </if>
+      <if test="usersHomeAddress != null" >
+        users_home_address,
+      </if>
+      <if test="usersStatus != null" >
+        users_status,
+      </if>
+      <if test="usersRemark != null" >
+        users_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="systemUsersId != null" >
+        #{systemUsersId,jdbcType=INTEGER},
+      </if>
+      <if test="userLoginName != null" >
+        #{userLoginName,jdbcType=VARCHAR},
+      </if>
+      <if test="userLoginPassword != null" >
+        #{userLoginPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="usersName != null" >
+        #{usersName,jdbcType=VARCHAR},
+      </if>
+      <if test="usersPhone != null" >
+        #{usersPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="usersAge != null" >
+        #{usersAge,jdbcType=INTEGER},
+      </if>
+      <if test="usersCardId != null" >
+        #{usersCardId,jdbcType=VARCHAR},
+      </if>
+      <if test="usersPosition != null" >
+        #{usersPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="usersHomeAddress != null" >
+        #{usersHomeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="usersStatus != null" >
+        #{usersStatus,jdbcType=INTEGER},
+      </if>
+      <if test="usersRemark != null" >
+        #{usersRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.test.product.user.model.SystemUsersRecordExample" resultType="java.lang.Integer" >
+    select count(*) from system_users_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update system_users_record
+    <set >
+      <if test="record.systemUsersId != null" >
+        system_users_id = #{record.systemUsersId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userLoginName != null" >
+        user_login_name = #{record.userLoginName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userLoginPassword != null" >
+        user_login_password = #{record.userLoginPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null" >
+        sex = #{record.sex,jdbcType=INTEGER},
+      </if>
+      <if test="record.usersName != null" >
+        users_name = #{record.usersName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usersPhone != null" >
+        users_phone = #{record.usersPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usersAge != null" >
+        users_age = #{record.usersAge,jdbcType=INTEGER},
+      </if>
+      <if test="record.usersCardId != null" >
+        users_card_id = #{record.usersCardId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usersPosition != null" >
+        users_position = #{record.usersPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usersHomeAddress != null" >
+        users_home_address = #{record.usersHomeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usersStatus != null" >
+        users_status = #{record.usersStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.usersRemark != null" >
+        users_remark = #{record.usersRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update system_users_record
+    set system_users_id = #{record.systemUsersId,jdbcType=INTEGER},
+      user_login_name = #{record.userLoginName,jdbcType=VARCHAR},
+      user_login_password = #{record.userLoginPassword,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=INTEGER},
+      users_name = #{record.usersName,jdbcType=VARCHAR},
+      users_phone = #{record.usersPhone,jdbcType=VARCHAR},
+      users_age = #{record.usersAge,jdbcType=INTEGER},
+      users_card_id = #{record.usersCardId,jdbcType=VARCHAR},
+      users_position = #{record.usersPosition,jdbcType=VARCHAR},
+      users_home_address = #{record.usersHomeAddress,jdbcType=VARCHAR},
+      users_status = #{record.usersStatus,jdbcType=INTEGER},
+      users_remark = #{record.usersRemark,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.test.product.user.model.SystemUsersRecord" >
+    update system_users_record
+    <set >
+      <if test="userLoginName != null" >
+        user_login_name = #{userLoginName,jdbcType=VARCHAR},
+      </if>
+      <if test="userLoginPassword != null" >
+        user_login_password = #{userLoginPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="usersName != null" >
+        users_name = #{usersName,jdbcType=VARCHAR},
+      </if>
+      <if test="usersPhone != null" >
+        users_phone = #{usersPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="usersAge != null" >
+        users_age = #{usersAge,jdbcType=INTEGER},
+      </if>
+      <if test="usersCardId != null" >
+        users_card_id = #{usersCardId,jdbcType=VARCHAR},
+      </if>
+      <if test="usersPosition != null" >
+        users_position = #{usersPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="usersHomeAddress != null" >
+        users_home_address = #{usersHomeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="usersStatus != null" >
+        users_status = #{usersStatus,jdbcType=INTEGER},
+      </if>
+      <if test="usersRemark != null" >
+        users_remark = #{usersRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where system_users_id = #{systemUsersId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.test.product.user.model.SystemUsersRecord" >
+    update system_users_record
+    set user_login_name = #{userLoginName,jdbcType=VARCHAR},
+      user_login_password = #{userLoginPassword,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      users_name = #{usersName,jdbcType=VARCHAR},
+      users_phone = #{usersPhone,jdbcType=VARCHAR},
+      users_age = #{usersAge,jdbcType=INTEGER},
+      users_card_id = #{usersCardId,jdbcType=VARCHAR},
+      users_position = #{usersPosition,jdbcType=VARCHAR},
+      users_home_address = #{usersHomeAddress,jdbcType=VARCHAR},
+      users_status = #{usersStatus,jdbcType=INTEGER},
+      users_remark = #{usersRemark,jdbcType=VARCHAR}
+    where system_users_id = #{systemUsersId,jdbcType=INTEGER}
+  </update>
+</mapper>

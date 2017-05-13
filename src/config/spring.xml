@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"    
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"     
+    xmlns:aop="http://www.springframework.org/schema/aop"    
+    xmlns:tx="http://www.springframework.org/schema/tx"    
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:mvc="http://www.springframework.org/schema/mvc"  
+    xsi:schemaLocation="     
+          http://www.springframework.org/schema/beans     
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd     
+          http://www.springframework.org/schema/tx     
+          http://www.springframework.org/schema/tx/spring-tx-3.2.xsd    
+          http://www.springframework.org/schema/context     
+          http://www.springframework.org/schema/context/spring-context-3.0.xsd     
+          http://www.springframework.org/schema/aop     
+          http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+          http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">  
+  	
+  	<!-- 注解扫描基包 -->
+  	<context:component-scan base-package="com.test">
+  		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+  	</context:component-scan>
+  
+     <context:property-placeholder location="classpath:jdbc.properties"/>  
+       
+  	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"   destroy-method="close">  
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>  
+        <property name="url" value="${jdbc.url}"/>  
+        <property name="username" value="${jdbc.username}"/>  
+        <property name="password" value="${jdbc.password}"/>  
+        <!--  maxActive: 最大连接数量    -->
+        <property name="maxActive" value="150"/>  
+        <!-- minIdle: 最小空闲连接    -->
+        <property name="minIdle" value="5"/>  
+        <!-- maxIdle: 最大空闲连接     -->
+        <property name="maxIdle" value="20"/>  
+        <!--   initialSize: 初始化连接      -->
+        <property name="initialSize" value="30"/>  
+        <!--  连接被泄露时是否打印    -->
+        <property name="logAbandoned" value="true"/>  
+        <!--  removeAbandoned: 是否自动回收超时连接    -->
+        <property name="removeAbandoned"  value="true"/>  
+        <!--   removeAbandonedTimeout: 超时时间(以秒数为单位)   --> 
+        <property name="removeAbandonedTimeout" value="10"/>  
+        <!-- maxWait: 超时等待时间以毫秒为单位 1000等于60秒  -->
+        <property name="maxWait" value="1000"/>  
+        <!-- 在空闲连接回收器线程运行期间休眠的时间值,以毫秒为单位. --> 
+        <property name="timeBetweenEvictionRunsMillis" value="10000"/>  
+        <!--  在每次空闲连接回收器线程(如果有)运行时检查的连接数量   --> 
+        <property name="numTestsPerEvictionRun" value="10"/>  
+        <!-- 1000 * 60 * 30  连接在池中保持空闲而不被空闲连接回收器线程   --> 
+        <property name="minEvictableIdleTimeMillis" value="10000"/>    
+    </bean>     
+    
+    <!-- mybatis sessionfactory -->
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<property name="dataSource" ref="dataSource"/>
+    	<property name="configLocation" value="classpath:config/mybatis.xml"/>
+    	<property name="mapperLocations" value="classpath:com/test/*/*/model/*Mapper.xml"/>
+    </bean>
+    
+    <!-- mybatis设置扫描包 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    	<property name="basePackage" value="com.test"/>
+    	<property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBean"></property>
+    </bean>
+       
+     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+        <property name="dataSource" ref="dataSource"></property>  
+     </bean>  
+     
+     <!-- 需要回滚的方法 --> 
+     <tx:advice id="serviceAdvice" transaction-manager="txManager">  
+        <tx:attributes>  
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="Throwable"/>  
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="Throwable"/>  
+            <!-- 启用事务支持 -->
+            <!-- <tx:method name="*" read-only="true" rollback-for="com.aokunsang.util.DaoException"/> -->  
+        </tx:attributes>  
+     </tx:advice> 
+       
+     <!-- 声明式事务管理 -->  
+     <aop:config proxy-target-class="true">  
+        <aop:pointcut id="servicePointcut" expression="execution(* com.*.*.man.*.*(..))"/>  
+        <aop:advisor advice-ref="serviceAdvice" pointcut-ref="servicePointcut"/>
+     </aop:config>  
+       
+     <!-- 自动扫描组件，需要把controller去掉，否则影响事务管理 -->  
+     <context:component-scan base-package="com.test">  
+        <context:exclude-filter type="regex" expression="com.test.*"/>  
+     </context:component-scan>  
+       
+<!--       spring bean工厂 
+      <bean id="springFactory" class="*"></bean> -->
+</beans>
